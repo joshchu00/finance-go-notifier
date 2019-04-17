@@ -28,9 +28,6 @@ func init() {
 	logger.Info(fmt.Sprintf("%s: %s", "CassandraKeyspace", config.CassandraKeyspace()))
 	logger.Info(fmt.Sprintf("%s: %s", "KafkaBootstrapServers", config.KafkaBootstrapServers()))
 	logger.Info(fmt.Sprintf("%s: %s", "KafkaNotifierTopic", config.KafkaNotifierTopic()))
-
-	// twse
-	twse.Init()
 }
 
 var environmentName string
@@ -84,7 +81,13 @@ func process() {
 
 		switch message.Exchange {
 		case "TWSE":
-			err = twse.Process(message.Symbol, message.Period, message.Datetime, cassandraClient)
+			err = twse.Process(
+				message.Symbol,
+				message.Period,
+				message.Datetime,
+				message.Strategy,
+				cassandraClient,
+			)
 			if err != nil {
 				logger.Panic(fmt.Sprintf("Process %v", err))
 			}
