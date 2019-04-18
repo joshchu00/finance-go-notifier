@@ -28,6 +28,10 @@ func init() {
 	logger.Info(fmt.Sprintf("%s: %s", "CassandraKeyspace", config.CassandraKeyspace()))
 	logger.Info(fmt.Sprintf("%s: %s", "KafkaBootstrapServers", config.KafkaBootstrapServers()))
 	logger.Info(fmt.Sprintf("%s: %s", "KafkaNotifierTopic", config.KafkaNotifierTopic()))
+	logger.Info(fmt.Sprintf("%s: %s", "TelegramToken", config.TelegramToken()))
+	logger.Info(fmt.Sprintf("%s: %s", "TelegramChatID", config.TelegramChatID()))
+	logger.Info(fmt.Sprintf("%s: %s", "TelegramURLSendMessage", config.TelegramURLSendMessage()))
+	logger.Info(fmt.Sprintf("%s: %s", "TelegramText", config.TelegramText()))
 }
 
 var environmentName string
@@ -86,6 +90,10 @@ func process() {
 				message.Period,
 				message.Datetime,
 				message.Strategy,
+				config.TelegramToken(),
+				config.TelegramChatID(),
+				config.TelegramURLSendMessage(),
+				config.TelegramText(),
 				cassandraClient,
 			)
 			if err != nil {
