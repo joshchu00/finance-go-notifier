@@ -48,11 +48,19 @@ func Process(symbol string, period string, ts int64, strategy string, token stri
 		"Content-Type": "application/json",
 	}
 
+	var value string
+	switch strategy {
+	case string(cassandra.StrategyColumnSSMA):
+		value = fmt.Sprintf(text, dateString, symbol, sr.Name, strategy, sr.SSMA)
+	case string(cassandra.StrategyColumnLSMA):
+		value = fmt.Sprintf(text, dateString, symbol, sr.Name, strategy, sr.LSMA)
+	}
+
 	var bodyBytes []byte
 	bodyBytes, err = json.Marshal(
 		&Body{
 			ChatID: chatID,
-			Text:   fmt.Sprintf(text, dateString, symbol, sr.LSMA),
+			Text:   value,
 		},
 	)
 	if err != nil {
